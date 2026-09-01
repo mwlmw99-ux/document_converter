@@ -1,0 +1,3 @@
+[workspace]
+members = ["crates/converter_core"]
+resolver = "2"

@@ -1,0 +1,18 @@
+name: document_converter
+description: Offline-first cross-platform document converter
+publish_to: none
+version: 0.1.0+1
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_riverpod: ^2.5.1
+  freezed_annotation: ^2.4.1
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  build_runner: ^2.4.9
+  freezed: ^2.5.2
+flutter:
+  uses-material-design: true
