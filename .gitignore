@@ -17,3 +17,16 @@ Cargo.lock
 *.dylib
 *.apk
 *.aab
+
+# Secrets / local environment
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*.p12
+*.jks
+*.keystore
+credentials.json
+secrets.json
+auth.json
