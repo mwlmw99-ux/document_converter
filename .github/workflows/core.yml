@@ -72,9 +72,18 @@ jobs:
         run: flutter create --platforms=android --project-name document_converter --org com.documentconverter .
       - name: Pin Android Gradle settings
         working-directory: apps/flutter_app/android
+        shell: bash
         run: |
-          sed -i "s/com.android.tools.build:gradle:[^']*/com.android.tools.build:gradle:8.6.1/" settings.gradle
-          sed -i "s/org.jetbrains.kotlin.android version '[^']*'/org.jetbrains.kotlin.android version '2.0.21'/" settings.gradle
+          set -euo pipefail
+          if [ -f settings.gradle ]; then
+            sed -i -E "s#com\.android\.tools\.build:gradle:[^'\"]+#com.android.tools.build:gradle:8.6.1#g" settings.gradle || true
+            sed -i -E "s#org\.jetbrains\.kotlin\.android[^\n]*version[^'\"]*#org.jetbrains.kotlin.android version '2.0.21'#g" settings.gradle || true
+          elif [ -f settings.gradle.kts ]; then
+            sed -i -E 's#com\.android\.tools\.build:gradle:[^" ]+#com.android.tools.build:gradle:8.6.1#g' settings.gradle.kts || true
+          else
+            echo "No Gradle settings file found" >&2
+            exit 1
+          fi
       - name: Flutter pub get
         working-directory: apps/flutter_app
         run: flutter pub get
