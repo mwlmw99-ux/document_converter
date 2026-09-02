@@ -1,4 +1,4 @@
 plugins {
-    id("com.android.application") version "8.6.1" apply false
-    // Kotlin plugin is provided by Flutter's Gradle tooling; keep a single classpath source.
+    id("com.android.application") version "8.7.3" apply false
+    id("org.jetbrains.kotlin.android") version "1.9.24" apply false
 }
