@@ -65,15 +65,21 @@ jobs:
       - uses: android-actions/setup-android@v3
       - name: Install Android SDK packages
         run: |
-          yes | sdkmanager --licenses >/dev/null || true
+          yes | sdkmanager --licenses >/dev/null 2>&1 || true
           sdkmanager "platform-tools" "platforms;android-35" "build-tools;35.0.0"
-      - name: Generate Android project when missing
+      - name: Generate Android project
         working-directory: apps/flutter_app
+        run: flutter create --platforms=android --project-name document_converter --org com.documentconverter .
+      - name: Pin Android Gradle settings
+        working-directory: apps/flutter_app/android
         run: |
-          if [ ! -d android ]; then flutter create --platforms=android --project-name document_converter .; fi
+          sed -i "s/com.android.tools.build:gradle:[^']*/com.android.tools.build:gradle:8.6.1/" settings.gradle
+          sed -i "s/org.jetbrains.kotlin.android version '[^']*'/org.jetbrains.kotlin.android version '2.0.21'/" settings.gradle
       - name: Flutter pub get
         working-directory: apps/flutter_app
         run: flutter pub get
+      - name: Verify toolchain
+        run: java -version && flutter doctor -v
       - name: Build Android artifact
         working-directory: apps/flutter_app
         run: ${{ matrix.build-command }}
