@@ -22,7 +22,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
         with:
-          channel: stable
+          flutter-version: 3.47.2
           cache: true
       - name: Flutter pub get
         working-directory: apps/flutter_app
@@ -60,7 +60,7 @@ jobs:
       - name: Flutter stable
         uses: subosito/flutter-action@v2
         with:
-          channel: stable
+          flutter-version: 3.47.2
           cache: true
       - uses: android-actions/setup-android@v3
       - name: Install Android SDK packages
@@ -102,7 +102,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
         with:
-          channel: stable
+          flutter-version: 3.47.2
           cache: true
       - name: Install Linux desktop dependencies
         if: matrix.platform == 'linux'
