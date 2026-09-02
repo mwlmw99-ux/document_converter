@@ -66,7 +66,7 @@ jobs:
       - name: Install Android SDK packages
         run: |
           yes | sdkmanager --licenses >/dev/null 2>&1 || true
-          sdkmanager "platform-tools" "platforms;android-35" "build-tools;35.0.0"
+          sdkmanager "platform-tools" "platforms;android-36" "build-tools;36.0.0"
       - name: Generate Android project
         working-directory: apps/flutter_app
         run: flutter create --platforms=android --project-name document_converter --org com.documentconverter .
@@ -84,6 +84,11 @@ jobs:
             echo "No Gradle settings file found" >&2
             exit 1
           fi
+          for f in ../android/app/build.gradle ../android/app/build.gradle.kts; do
+            if [ -f "$f" ]; then
+              sed -i -E 's/compileSdk(Line)?[[:space:]]+[0-9]+/compileSdk\1 36/g; s/targetSdk(Line)?[[:space:]]+[0-9]+/targetSdk\1 36/g' "$f"
+            fi
+          done
       - name: Flutter pub get
         working-directory: apps/flutter_app
         run: flutter pub get
