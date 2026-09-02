@@ -1,3 +1,1 @@
-plugins {
-    id("com.android.application") version "8.7.3" apply false
-}
+// Root build file intentionally empty; plugins are managed in settings.gradle.kts.
