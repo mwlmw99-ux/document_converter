@@ -6,5 +6,4 @@ android {
  defaultConfig { applicationId = "com.documentconverter"; minSdk = 24; targetSdk = 36; versionCode = 1; versionName = "1.0" }
  buildTypes { release { signingConfig = signingConfigs.getByName("debug") } }
 }
-kotlin { compilerOptions { jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17 } }
 flutter { source = "../.." }
