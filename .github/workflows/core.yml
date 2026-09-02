@@ -67,49 +67,9 @@ jobs:
         run: |
           yes | sdkmanager --licenses >/dev/null 2>&1 || true
           sdkmanager "platform-tools" "platforms;android-36" "build-tools;36.0.0"
-      - name: Generate Android project
-        working-directory: apps/flutter_app
-        run: flutter create --platforms=android --project-name document_converter --org com.documentconverter .
-      - name: Configure Android app SDK versions
-        working-directory: apps/flutter_app/android
-        shell: bash
-        run: |
-          set -euo pipefail
-          python3 - <<'PYTHON'
-          from pathlib import Path
-          import re
-          candidates = [Path('app/build.gradle.kts'), Path('app/build.gradle')]
-          path = next((p for p in candidates if p.is_file()), None)
-          if path is None:
-              raise SystemExit('Android app Gradle file not found')
-          text = path.read_text()
-          if path.suffixes[-2:] == ['.gradle', '.kts']:
-              text = re.sub(r'compileSdk\s*=\s*[^\n]+', 'compileSdk = 36', text)
-              text = re.sub(r'compileSdkVersion\s*[^\n]+', 'compileSdk = 36', text)
-              if 'compileSdk = 36' not in text:
-                  raise SystemExit('Could not set compileSdk = 36 in Kotlin DSL')
-          else:
-              text = re.sub(r'compileSdkVersion\s+[^\n]+', 'compileSdkVersion 36', text)
-              text = re.sub(r'compileSdk\s*=\s*[^\n]+', 'compileSdkVersion 36', text)
-              if 'compileSdkVersion 36' not in text:
-                  raise SystemExit('Could not set compileSdkVersion 36 in Groovy')
-          text = re.sub(r'targetSdk\s*=\s*[^\n]+', 'targetSdk = 36', text)
-          text = re.sub(r'targetSdkVersion\s+[^\n]+', 'targetSdkVersion 36', text)
-          path.write_text(text)
-          print(f'Configured {path}')
-          PYTHON
-      - name: Verify compileSdk 36
+      - name: Verify Android compileSdk
         working-directory: apps/flutter_app/android/app
-        shell: bash
-        run: |
-          set -euo pipefail
-          if [ -f build.gradle.kts ]; then
-            grep -nE '^\s*compileSdk\s*=\s*36\s*$' build.gradle.kts
-          elif [ -f build.gradle ]; then
-            grep -nE '^\s*compileSdkVersion\s+36\s*$' build.gradle
-          else
-            echo 'Android app Gradle file missing' >&2; exit 1
-          fi
+        run: grep -n "compileSdk = 36" build.gradle.kts
       - name: Flutter pub get
         working-directory: apps/flutter_app
         run: flutter pub get
