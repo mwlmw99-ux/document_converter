@@ -86,7 +86,7 @@ jobs:
           fi
           for f in ../android/app/build.gradle ../android/app/build.gradle.kts; do
             if [ -f "$f" ]; then
-              sed -i -E 's/compileSdk(Line)?[[:space:]]+[0-9]+/compileSdk\1 36/g; s/targetSdk(Line)?[[:space:]]+[0-9]+/targetSdk\1 36/g' "$f"
+              sed -i -E 's/compileSdk(Line)?[[:space:]]*(=)?[[:space:]]*[^;]+/compileSdk\1 = 36/g; s/targetSdk(Line)?[[:space:]]*(=)?[[:space:]]*[^;]+/targetSdk\1 = 36/g' "$f"
             fi
           done
       - name: Flutter pub get
